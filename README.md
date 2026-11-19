@@ -3,15 +3,17 @@
 面向个人日常时间管理的轻量桌面应用（记录 / 提醒 / 推进 / 沉淀）。  
 同一套源码运行于 **Windows 10/11** 与 **树莓派 4B 桌面**。界面使用标准库 **tkinter**（冷启动快、打包体积小），数据保存在 CouchDB。
 
-默认远程库：
+数据库地址、库名、账号密码，以及和风天气凭据，都只放本机配置（不要写进源码或提交 Git）。复制仓库根目录的示例文件并填入真实值：
 
-- 地址：`https://couchdb.mmxiutu.com/`
-- 库名：`schedule_assistant`
+- `connection.example.json` → `connection.json`（`url` / `user` / `password` / `db`）
+- `qweather.example.json` → `qweather.json`（API Host 与 JWT）
 
-连接信息保存在本机（不入库、不进 Git）：
+保存位置：
 
-- Windows：`%APPDATA%\ScheduleAssistant\connection.json`
-- Linux / 树莓派：`~/.config/schedule-assistant/connection.json`
+- Windows：`%APPDATA%\ScheduleAssistant\`
+- Linux / 树莓派：`~/.config/schedule-assistant/`
+
+未配置 CouchDB 时可在应用顶部「设置」里填写并测试连接。未配置和风天气时，待机页显示「天气暂不可用」。
 
 ## Windows 运行
 

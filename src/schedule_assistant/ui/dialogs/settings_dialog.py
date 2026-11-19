@@ -92,7 +92,7 @@ class SettingsDialog:
             url=self.url.get().strip(),
             user=self.user.get().strip(),
             password=self.password.get(),
-            db=self.db.get().strip() or "schedule_assistant",
+            db=self.db.get().strip(),
         )
 
     def _ping(self) -> None:

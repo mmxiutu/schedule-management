@@ -9,21 +9,16 @@ from pathlib import Path
 APP_DIR_NAME_WIN = "ScheduleAssistant"
 APP_DIR_NAME_UNIX = "schedule-assistant"
 
-DEFAULT_URL = "https://couchdb.mmxiutu.com/"
-DEFAULT_USER = "admin"
-DEFAULT_PASSWORD = "cha1024.com"
-DEFAULT_DB = "schedule_assistant"
-
 
 @dataclass
 class ConnectionConfig:
-    url: str = DEFAULT_URL
-    user: str = DEFAULT_USER
-    password: str = DEFAULT_PASSWORD
-    db: str = DEFAULT_DB
+    url: str = ""
+    user: str = ""
+    password: str = ""
+    db: str = ""
 
     def normalized_url(self) -> str:
-        return self.url.rstrip("/") + "/"
+        return self.url.rstrip("/") + "/" if self.url else ""
 
 
 def config_dir() -> Path:
@@ -43,15 +38,13 @@ def connection_path() -> Path:
 def load_connection() -> ConnectionConfig:
     path = connection_path()
     if not path.exists():
-        cfg = ConnectionConfig()
-        save_connection(cfg)
-        return cfg
+        return ConnectionConfig()
     data = json.loads(path.read_text(encoding="utf-8"))
     return ConnectionConfig(
-        url=data.get("url") or DEFAULT_URL,
-        user=data.get("user") or DEFAULT_USER,
-        password=data.get("password") if "password" in data else DEFAULT_PASSWORD,
-        db=data.get("db") or DEFAULT_DB,
+        url=(data.get("url") or "").strip(),
+        user=(data.get("user") or "").strip(),
+        password=data.get("password") or "",
+        db=(data.get("db") or "").strip(),
     )
 
 

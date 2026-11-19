@@ -1,4 +1,4 @@
-# Optional local CouchDB. Default app connection is the remote instance.
+# Optional local CouchDB. Point connection.json at this instance if you use it.
 services:
   couchdb:
     image: couchdb:3

@@ -21,7 +21,7 @@ class ScheduleCouchClient:
         self.session.auth = (cfg.user, cfg.password)
         self.session.headers["Accept"] = "application/json"
         self.base = cfg.url.rstrip("/")
-        self.db = cfg.db.strip("/") or "schedule_assistant"
+        self.db = cfg.db.strip("/")
 
     def _url(self, *parts: str) -> str:
         extra = "/".join(p.strip("/") for p in parts if p)
@@ -38,6 +38,8 @@ class ScheduleCouchClient:
         raise CouchError(f"{default}: {reason}", status=resp.status_code)
 
     def ping(self) -> dict[str, Any]:
+        if not self.base or not self.db:
+            raise CouchError("尚未配置 CouchDB 地址或数据库名")
         resp = self.session.get(self.base, timeout=self.timeout)
         if not resp.ok:
             self._raise(resp, "连接失败")

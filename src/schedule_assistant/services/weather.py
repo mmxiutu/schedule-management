@@ -10,32 +10,22 @@ import requests
 from schedule_assistant.app_paths import config_dir
 
 # 和风天气实时天气: https://dev.qweather.com/docs/api/weather/weather-current/
-QWEATHER_HOST = "mv49vk5p7y.re.qweatherapi.com"
 SHANGHAI_LAT = 31.23
 SHANGHAI_LON = 121.47
 
-DEFAULT_JWT = {
-    "kid": "KAB6RD4XWV",
-    "iss": "Q90D00C701",
-    "sub": "45KX2DDRQG",
-    "private_key": (
-        "-----BEGIN PRIVATE KEY-----\n"
-        "MC4CAQAwBQYDK2VwBCIEII0IZ1H4LjRWGxKzm4s6OPF9vkTlBuO2dpof94MwIDft\n"
-        "-----END PRIVATE KEY-----"
-    ),
-}
 
-
-def _qweather_path() -> Path:
+def qweather_path() -> Path:
     return config_dir() / "qweather.json"
 
 
-def _jwt_fields() -> dict:
-    cfg = dict(DEFAULT_JWT)
-    path = _qweather_path()
-    if path.exists():
-        cfg.update(json.loads(path.read_text(encoding="utf-8")))
-    return cfg
+def _load_qweather() -> dict:
+    path = qweather_path()
+    if not path.exists():
+        raise ValueError(f"缺少和风天气配置：{path}")
+    data = json.loads(path.read_text(encoding="utf-8"))
+    if not isinstance(data, dict):
+        raise ValueError("和风天气配置格式无效")
+    return data
 
 
 def _build_jwt(cfg: dict) -> str:
@@ -52,8 +42,14 @@ def _build_jwt(cfg: dict) -> str:
 
 
 def fetch_shanghai_weather(timeout: float = 8.0) -> str:
-    token = _build_jwt(_jwt_fields())
-    url = f"https://{QWEATHER_HOST}/weather/v1/current/{SHANGHAI_LAT}/{SHANGHAI_LON}"
+    cfg = _load_qweather()
+    host = (cfg.get("host") or "").strip().rstrip("/")
+    if not host:
+        raise ValueError("和风天气 host 未配置")
+    lat = cfg.get("lat", SHANGHAI_LAT)
+    lon = cfg.get("lon", SHANGHAI_LON)
+    token = _build_jwt(cfg)
+    url = f"https://{host}/weather/v1/current/{lat}/{lon}"
     resp = requests.get(
         url,
         headers={

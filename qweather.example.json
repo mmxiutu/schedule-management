@@ -1,0 +1,7 @@
+{
+  "host": "your-host.re.qweatherapi.com",
+  "kid": "",
+  "iss": "",
+  "sub": "",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nPASTE_YOUR_ED25519_PRIVATE_KEY_HERE\n-----END PRIVATE KEY-----"
+}
