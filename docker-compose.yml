@@ -1,0 +1,9 @@
+# Optional local CouchDB. Default app connection is the remote instance.
+services:
+  couchdb:
+    image: couchdb:3
+    ports:
+      - "5984:5984"
+    environment:
+      COUCHDB_USER: admin
+      COUCHDB_PASSWORD: password

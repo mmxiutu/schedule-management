@@ -1,0 +1,34 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "schedule-assistant"
+version = "0.1.0"
+description = "轻量日程管理助手（tkinter + CouchDB）"
+requires-python = ">=3.11"
+dependencies = [
+    "requests>=2.31",
+    "chinese-calendar>=1.9.0",
+    "tzdata>=2024.1",
+    "PyJWT>=2.8",
+    "cryptography>=42.0",
+    "pillow>=10.0",
+    "pystray>=0.19",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8.0"]
+
+[project.scripts]
+schedule-assistant = "schedule_assistant.main:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+schedule_assistant = ["assets/fonts/*.ttf"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
