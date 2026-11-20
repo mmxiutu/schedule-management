@@ -33,6 +33,7 @@ pyinstaller --noconfirm --clean --windowed --onedir \
   --hidden-import PIL._tkinter_finder \
   --hidden-import schedule_assistant \
   --add-data "src/schedule_assistant/assets/fonts:schedule_assistant/assets/fonts" \
+  --add-data "src/schedule_assistant/assets/images:schedule_assistant/assets/images" \
   src/schedule_assistant/main.py
 
 APP_DIR="$(pwd)/dist/ScheduleAssistant"
@@ -48,6 +49,7 @@ Name=日程管理助手
 Comment=轻量日程与时间看板
 Exec=$BIN
 Path=$APP_DIR
+Icon=$APP_DIR/_internal/schedule_assistant/assets/images/orange.png
 Terminal=false
 Categories=Office;Calendar;
 StartupNotify=true

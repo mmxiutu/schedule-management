@@ -28,6 +28,7 @@ pyinstaller --noconfirm --clean --windowed --onedir ^
   --hidden-import PIL._tkinter_finder ^
   --hidden-import schedule_assistant ^
   --add-data "src\schedule_assistant\assets\fonts;schedule_assistant/assets/fonts" ^
+  --add-data "src\schedule_assistant\assets\images;schedule_assistant/assets/images" ^
   src\schedule_assistant\main.py
 
 if errorlevel 1 (

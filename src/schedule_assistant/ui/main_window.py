@@ -10,6 +10,7 @@ from datetime import date, datetime, time
 
 from schedule_assistant.db.models import KIND_NORMAL
 from schedule_assistant.domain.clock import TZ, iso_dt
+from schedule_assistant.resources import app_icon_path
 from schedule_assistant.ui.theme import COLOR_BANNER, COLOR_BG
 from schedule_assistant.ui.views.board_view import BoardView
 from schedule_assistant.ui.views.month_view import MonthView
@@ -33,6 +34,7 @@ class MainWindow:
         self.root.minsize(1100, 680)
         self.root.configure(bg=COLOR_BG)
         self.root.protocol("WM_DELETE_WINDOW", self._on_close)
+        self._apply_window_icon()
 
         self.banner = tk.Label(root, text="", bg=COLOR_BANNER, fg="#000", anchor="w")
         top = ttk.Frame(root)
@@ -81,6 +83,17 @@ class MainWindow:
             self.show_banner(f"数据库未连通：{workspace.last_error}。请打开「设置」测试连接。")
         else:
             self.root.after(50, self.refresh_all)
+
+    def _apply_window_icon(self) -> None:
+        path = app_icon_path()
+        if path is None:
+            return
+        try:
+            icon = tk.PhotoImage(file=str(path), master=self.root)
+            self.root.iconphoto(True, icon)
+            self.root._app_icon = icon  # keep PhotoImage alive
+        except Exception:
+            pass
 
     def show_banner(self, text: str) -> None:
         self.banner.config(text=text)

@@ -9,10 +9,17 @@ from pystray import Icon, Menu, MenuItem
 from schedule_assistant.db.repo import mark_notified
 from schedule_assistant.domain.clock import now
 from schedule_assistant.domain.time_filters import due_for_reminder
+from schedule_assistant.resources import app_icon_path
 
 
 def _icon_image() -> Image.Image:
-    return Image.new("RGB", (64, 64), "#0072B2")
+    path = app_icon_path()
+    if path is not None:
+        try:
+            return Image.open(path).convert("RGBA")
+        except Exception:
+            pass
+    return Image.new("RGBA", (64, 64), "#F47B20")
 
 
 class TrayController:
