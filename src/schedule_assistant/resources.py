@@ -31,3 +31,32 @@ def lockscreen_font_path() -> Path | None:
 
 def app_icon_path() -> Path | None:
     return _search(Path("images") / ICON_FILENAME)
+
+
+def linux_tray_host_path() -> Path | None:
+    return _search(Path("linux_tray_host.py"))
+
+
+def install_desktop_icon() -> None:
+    """Copy the window icon where labwc / wf-panel look up the app id."""
+    if not sys.platform.startswith("linux"):
+        return
+    src = app_icon_path()
+    if src is None:
+        return
+    dest_dir = Path.home() / ".local/share/icons/hicolor/256x256/apps"
+    try:
+        dest_dir.mkdir(parents=True, exist_ok=True)
+        data = src.read_bytes()
+        for name in (
+            "ScheduleAssistant.png",
+            "Scheduleassistant.png",
+            "scheduleassistant.png",
+            "scheduleAssistant.png",
+        ):
+            target = dest_dir / name
+            if target.is_file() and target.stat().st_size == len(data):
+                continue
+            target.write_bytes(data)
+    except OSError:
+        pass

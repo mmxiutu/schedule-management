@@ -29,6 +29,7 @@ pyinstaller --noconfirm --clean --windowed --onedir ^
   --hidden-import schedule_assistant ^
   --add-data "src\schedule_assistant\assets\fonts;schedule_assistant/assets/fonts" ^
   --add-data "src\schedule_assistant\assets\images;schedule_assistant/assets/images" ^
+  --add-data "src\schedule_assistant\assets\linux_tray_host.py;schedule_assistant/assets" ^
   src\schedule_assistant\main.py
 
 if errorlevel 1 (

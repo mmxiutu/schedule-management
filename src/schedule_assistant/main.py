@@ -7,6 +7,7 @@ import tkinter as tk
 from tkinter import messagebox
 
 from schedule_assistant.app_paths import config_dir
+from schedule_assistant.resources import install_desktop_icon
 from schedule_assistant.ui.main_window import MainWindow
 from schedule_assistant.workspace import Workspace
 
@@ -38,13 +39,14 @@ def _acquire_lock() -> bool:
 
 
 def main() -> None:
-    root = tk.Tk()
+    root = tk.Tk(className="ScheduleAssistant")
     root.withdraw()
     if not _acquire_lock():
         messagebox.showinfo("日程管理助手", "程序已在运行。")
         root.destroy()
         return
     try:
+        install_desktop_icon()
         workspace = Workspace()
         root.deiconify()
         MainWindow(root, workspace)

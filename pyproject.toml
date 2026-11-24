@@ -27,7 +27,7 @@ schedule-assistant = "schedule_assistant.main:main"
 where = ["src"]
 
 [tool.setuptools.package-data]
-schedule_assistant = ["assets/fonts/*.ttf", "assets/images/*.png"]
+schedule_assistant = ["assets/fonts/*.ttf", "assets/images/*.png", "assets/linux_tray_host.py"]
 
 [tool.pytest.ini_options]
 pythonpath = ["src"]
